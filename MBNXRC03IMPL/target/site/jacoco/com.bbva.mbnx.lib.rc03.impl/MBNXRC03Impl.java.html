@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="es"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>MBNXRC03Impl.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">MBNXRC03IMPL</a> &gt; <a href="index.source.html" class="el_package">com.bbva.mbnx.lib.rc03.impl</a> &gt; <span class="el_source">MBNXRC03Impl.java</span></div><h1>MBNXRC03Impl.java</h1><pre class="source lang-java linenums">package com.bbva.mbnx.lib.rc03.impl;
+
+import java.util.HashMap;
+import java.util.Map;
+
+import org.json.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+
+import com.bbva.mbnx.lib.rc03.MBNXRC03;
+
+<span class="fc" id="L18">public class MBNXRC03Impl extends MBNXRC03Abstract {</span>
+
+<span class="fc" id="L20">	private static final Logger LOGGER = LoggerFactory.getLogger(MBNXRC03.class);</span>
+	private static final String SERVICE_ID=&quot;SrvModifyBlock&quot;;
+	private static final String COMPLETE=&quot;COMPLETE&quot;;
+	private static final String OBSERVA=&quot;CUENTA DESBLOQUEADA POR NOMINA&quot;;
+	private static final String CODIGO=&quot;C01&quot;;
+	
+	@Override
+	public boolean executeModifyBlock(String accountNumber) {
+<span class="fc" id="L28">		HttpHeaders headers=new HttpHeaders();</span>
+<span class="fc" id="L29">		headers.setContentType(MediaType.APPLICATION_JSON);</span>
+<span class="fc" id="L30">		Map&lt;String,Object&gt; uriVars=new HashMap&lt;&gt;();</span>
+<span class="fc" id="L31">		uriVars.put(&quot;account-id&quot;, accountNumber);</span>
+<span class="fc" id="L32">		uriVars.put(&quot;block-id&quot;, CODIGO);</span>
+<span class="fc" id="L33">		JSONObject json_payload=new JSONObject();</span>
+<span class="fc" id="L34">		json_payload.put(&quot;description&quot;, OBSERVA);</span>
+<span class="fc" id="L35">		json_payload.put(&quot;status&quot;, COMPLETE);</span>
+<span class="fc" id="L36">		HttpEntity&lt;String&gt; request= new HttpEntity&lt;String&gt;(json_payload.toString(),headers);</span>
+<span class="fc" id="L37">		System.out.println(request.toString());</span>
+<span class="fc" id="L38">		ResponseEntity&lt;String&gt; response=this.internalApiConnector.exchange(SERVICE_ID, HttpMethod.PATCH, request, String.class,uriVars);</span>
+<span class="fc bfc" id="L39" title="All 2 branches covered.">		if(response.getStatusCode().equals(HttpStatus.NO_CONTENT)){</span>
+<span class="fc" id="L40">			return true;</span>
+		}
+<span class="fc" id="L42">		return false;</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.7.201606060606</span></div></body></html>
